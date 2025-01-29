@@ -44,7 +44,7 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
 
-    cells = np.zeros((60, 80))
+    cells = np.zeros((60, 80))  # 60 rows, 80 columns
     screen.fill(COLOUR_GRID)
     update(screen, cells, 10)
 
@@ -65,14 +65,18 @@ def main():
                     pygame.display.update()
             if pygame.mouse.get_pressed()[0]:
                 pos = pygame.mouse.get_pos()
-                cells[pos[1] // 10, pos[0] // 10] = 1
-                update(screen, cells, 10)
-                pygame.display.update()
+                row, col = pos[1] // 10, pos[0] // 10
+
+                # Ensure clicked position is within bounds
+                if row < cells.shape[0] and col < cells.shape[1]:
+                    cells[row, col] = 1
+                    update(screen, cells, 10)
+                    pygame.display.update()
 
         screen.fill(COLOUR_GRID)
 
         if running:
-            cells = update(screen, cells, 10, with_progress = True)
+            cells = update(screen, cells, 10, with_progress=True)
             pygame.display.update()
         
         time.sleep(0.001)
